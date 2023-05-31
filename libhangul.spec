@@ -1,16 +1,16 @@
-Name:		libhangul
-Version:	0.1.0
-Release:	28%{?dist}
+Name:           libhangul
+Version:        0.1.0
+Release:        28%{?dist}
 
-License:	LGPL-2.1-or-later
-URL:		https://github.com/libhangul/libhangul
+License:        LGPL-2.1-or-later
+URL:            https://github.com/libhangul/libhangul
 # Change Source URL when upstream released tar ball
-# Source0:	https://github.com/libhangul/libhangul/archive/libhangul-%{version}.tar.gz
-Source0:	https://libhangul.googlecode.com/files/libhangul-%{version}.tar.gz
+# Source0:      https://github.com/libhangul/libhangul/archive/libhangul-%{version}.tar.gz
+Source0:        https://libhangul.googlecode.com/files/libhangul-%{version}.tar.gz
 
-Summary:	Hangul input library
-BuildRequires:	  gettext-devel, automake, libtool
-BuildRequires:	  make
+Summary:        Hangul input library
+BuildRequires:    expat-devel, gettext-devel, automake, intltool, libtool, which
+BuildRequires:    make
 
 
 %description
@@ -18,9 +18,9 @@ libhangul provides common features for Hangul input method programs.
 
 
 %package devel
-Summary:	Development files for libhangul
-Requires:	%{name} = %{version}-%{release}
-Requires:	pkgconfig
+Summary:        Development files for libhangul
+Requires:       %{name} = %{version}-%{release}
+Requires:       pkgconfig
 %description devel
 This package contains development files necessary to develop programs
 providing Hangul input.
@@ -30,6 +30,7 @@ providing Hangul input.
 %setup -q
 
 %build
+./autogen.sh
 autoreconf -fi
 %configure --disable-static
 
@@ -43,7 +44,8 @@ rm $RPM_BUILD_ROOT%{_libdir}/%{name}.la
 %find_lang %{name}
 
 
-%ldconfig_scriptlets
+%post -p /sbin/ldconfig
+%postun -p /sbin/ldconfig
 
 
 %files -f %{name}.lang
